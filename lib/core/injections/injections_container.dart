@@ -1,17 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:test_challenge/data/datasource/local/auth_local_data_source.dart';
 
+import '../../data/datasource/local/auth_local_data_source.dart';
 import '../../data/models/user_model.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../../presentation/global/auth_bloc/auth_bloc.dart';
+import '../../presentation/login/bloc/login_bloc.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   initIsar();
-  await GetIt.instance.allReady();
+  await GetIt.instance.allReady(); //Wait till Isar inits
   initDataSource();
   initRepos();
   initBloc();
@@ -30,7 +32,9 @@ void initIsar() {
       },
     );
   } catch (e) {
-    print(e);
+    if (kDebugMode) {
+      print(e);
+    }
   }
 }
 
@@ -45,4 +49,5 @@ void initRepos() {
 
 void initBloc() {
   sl.registerLazySingleton<AuthBloc>(() => AuthBloc(sl()));
+  sl.registerFactory<LoginBloc>(() => LoginBloc(sl()));
 }

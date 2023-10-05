@@ -10,12 +10,10 @@ class Alert {
       content: Text(message),
       backgroundColor: color,
       showCloseIcon: true,
+      elevation: 0,
       closeIconColor: Colors.white,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16))),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      elevation: 20,
     );
   }
 

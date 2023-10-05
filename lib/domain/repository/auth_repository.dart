@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_challenge/core/constants/local_cache_keys.dart';
-import 'package:test_challenge/core/utils/helpers.dart';
+import '/core/constants/local_cache_keys.dart';
+import '/core/exceptions/success.dart';
+import '/core/utils/helpers.dart';
 
 import '../../core/exceptions/failure.dart';
 import '../../data/datasource/local/auth_local_data_source.dart';
@@ -12,6 +13,8 @@ abstract class AuthRepository {
       {required String username, required String password});
 
   Future<Either<Failure, bool>> logged();
+
+  Future<Either<Failure, Success>> logout();
 
   Future<Either<Failure, UserModel>> register(
       {required String username,
@@ -47,12 +50,23 @@ class AuthRepositoryImpl implements AuthRepository {
     });
   }
 
+  //Check if user is loggedIn
   @override
   Future<Either<Failure, bool>> logged() async {
     return await runWithTryCatch(recall: () async {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       return sharedPreferences.getInt(LocalCacheKeys.userId) != null;
+    });
+  }
+
+  @override
+  Future<Either<Failure, Success>> logout() async {
+    return await runWithTryCatch(recall: () async {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      sharedPreferences.remove(LocalCacheKeys.userId);
+      return Success();
     });
   }
 }

@@ -14,17 +14,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEvent>((event, emit) async {
       if (event is AppStarted) {
         final response = await authRepository.logged();
-        response.fold((l) => emit(Unauthorized()), (r){
-          if(r){
+        response.fold((l) => emit(Unauthorized()), (r) {
+          if (r) {
             emit(Authorized());
-          }else{
+          } else {
             emit(Unauthorized());
           }
         });
       } else if (event is LoggedIn) {
         emit(Authorized());
       } else if (event is LoggedOut) {
-        emit(Unauthorized());
+        final response = await authRepository.logout();
+        response.fold((l) => emit(Unauthorized()), (r) => emit(Unauthorized()));
       }
     });
   }

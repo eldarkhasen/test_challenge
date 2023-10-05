@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:test_challenge/presentation/global/auth_bloc/auth_bloc.dart';
-import 'package:test_challenge/presentation/global/provider/global_bloc_provider.dart';
-import 'package:test_challenge/presentation/home/home_page.dart';
-import 'package:test_challenge/presentation/login/login_page.dart';
-import 'package:test_challenge/core/injections/injections_container.dart' as di;
+import '/presentation/global/provider/global_bloc_provider.dart';
+import '/presentation/home/home_page.dart';
+import '/presentation/login/login_page.dart';
+import '/core/injections/injections_container.dart' as di;
+import '/theme/dark_theme.dart';
+import 'presentation/global/auth_bloc/auth_bloc.dart';
+import 'theme/light_theme.dart';
 
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -25,10 +27,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Test Task',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: lightTheme(context),
+        scaffoldMessengerKey: snackbarKey,
+        darkTheme: darkTheme(context),
+        themeMode: ThemeMode.system,
         home: GlobalBlocProvider(
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {

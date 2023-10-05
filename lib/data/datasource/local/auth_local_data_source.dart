@@ -1,9 +1,12 @@
 import 'package:isar/isar.dart';
+import '/core/exceptions/failure.dart';
 
+import '../../../core/exceptions/exceptions.dart';
 import '../../models/user_model.dart';
 
 abstract class AuthLocalDataSource {
-  Future<UserModel?> login({required String username, required String password});
+  Future<UserModel?> login(
+      {required String username, required String password});
 
   Future<UserModel> register(
       {required String email,
@@ -35,6 +38,19 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       required String userName,
       required String password}) async {
     final UserModel user = UserModel(userName, email, password);
+    List<UserModel> users = await isar.userModels
+        .where()
+        .filter()
+        .usernameEqualTo(userName)
+        .and()
+        .emailEqualTo(email)
+        .findAll();
+    //Check if user already exists
+    if (users.isNotEmpty) {
+      throw SystemException(const SystemFailure({
+        "error": ["User already exists"]
+      }, 500, null, null, 2000));
+    }
     Id id = await isar.writeTxn(() => isar.userModels.put(user));
     user.idIsar = id;
     return user;
