@@ -55,18 +55,6 @@ class NetworkFailure extends Failure {
   }
 }
 
-class RequestFailure extends Failure {
-  const RequestFailure(Map<String, dynamic>? messages, errorCode,
-      StackTrace? stackTrace,Map<String, dynamic>? errors, int customCode)
-      : super(messages, errorCode, "Invalid request: ", stackTrace, errors,
-            customCode);
-
-  @override
-  String getName() {
-    return Failure.REQUEST_FAILURE;
-  }
-}
-
 class TimeOutFailure extends Failure {
   const TimeOutFailure(Map<String, dynamic>? messages, errorCode,
       StackTrace? stackTrace, Map<String, dynamic>? errors, int customCode)
@@ -79,29 +67,6 @@ class TimeOutFailure extends Failure {
   }
 }
 
-class CacheFailure extends Failure {
-  const CacheFailure(Map<String, dynamic>? messages, errorCode, StackTrace? stackTrace,
-      Map<String, dynamic>? errors, int customCode)
-      : super(messages, errorCode, "Local cache error: ", stackTrace, errors,
-            customCode);
-
-  @override
-  String getName() {
-    return Failure.CACHE_FAILURE;
-  }
-}
-
-class UnauthorizedFailure extends Failure {
-  const UnauthorizedFailure(Map<String, dynamic>? messages, errorCode,
-      StackTrace? stackTrace, Map<String, dynamic>? errors, int customCode)
-      : super(messages, errorCode, "Unauthorized: ", stackTrace, errors,
-            customCode);
-
-  @override
-  String getName() {
-    return Failure.UNAUTHORIZED_FAILURE;
-  }
-}
 
 class SystemFailure extends Failure {
   const SystemFailure(Map<String, dynamic>? messages, errorCode,
@@ -112,17 +77,5 @@ class SystemFailure extends Failure {
   @override
   String getName() {
     return Failure.SYSTEM_FAILURE;
-  }
-}
-
-class FetchDataFailure extends Failure {
-  const FetchDataFailure(Map<String, dynamic>? messages, errorCode,
-      StackTrace? stackTrace, Map<String, dynamic>? errors, int customCode)
-      : super(messages, errorCode, "Error during fetching data:", stackTrace,
-            errors, customCode);
-
-  @override
-  String getName() {
-    return Failure.FETCH_DATA_FAILURE;
   }
 }

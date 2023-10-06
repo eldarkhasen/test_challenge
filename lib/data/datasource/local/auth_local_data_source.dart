@@ -5,9 +5,11 @@ import '../../../core/exceptions/exceptions.dart';
 import '../../models/user_model.dart';
 
 abstract class AuthLocalDataSource {
+  ///Login user
   Future<UserModel?> login(
       {required String username, required String password});
 
+  ///Register user
   Future<UserModel> register(
       {required String email,
       required String userName,
@@ -45,7 +47,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
         .and()
         .emailEqualTo(email)
         .findAll();
-    //Check if user already exists
+    ///Check if user already exists
     if (users.isNotEmpty) {
       throw SystemException(const SystemFailure({
         "error": ["User already exists"]
@@ -53,6 +55,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     }
     Id id = await isar.writeTxn(() => isar.userModels.put(user));
     user.idIsar = id;
+    ///return user with ID to store it in local storage
     return user;
   }
 }
